@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timestamp Ordering in Databases</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #343a40;
+        }
+        p, li {
+            line-height: 1.8;
+            color: #555;
+        }
+        .log {
+            background: #eef;
+            padding: 15px;
+            border-left: 5px solid #007bff;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        footer {
+            background: #007bff;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 30px;
+        }
+        button {
+            padding: 12px 18px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Timestamp Ordering in Databases</h1>
+        <img src="file:C:\Users\SOHAM\OneDrive\Pictures\timeso.jpg" >
+   
+        <h2>Introduction</h2>
+        <p>In modern database management systems, ensuring data consistency and maintaining proper transaction execution are critical. Timestamp Ordering is a concurrency control mechanism that enforces serializability by assigning unique timestamps to transactions.</p>
+        
+        <h2>What is Timestamp Ordering?</h2>
+        <p>Each transaction is assigned a unique timestamp when it begins. This timestamp determines the execution order, ensuring chronological processing of transactions.</p>
+        
+        <h2>Timestamp Ordering Protocol</h2>
+        <h3>Read Operation:</h3>
+        <ul>
+            <li>If <code>TS(Ti) &lt; W-timestamp(Q)</code>, the read operation is rejected, and <code>Ti</code> is rolled back.</li>
+            <li>Otherwise, the read is executed, and <code>R-timestamp(Q)</code> is updated.</li>
+        </ul>
+        
+        <h3>Write Operation:</h3>
+        <ul>
+            <li>If <code>TS(Ti) &lt; R-timestamp(Q)</code> or <code>TS(Ti) &lt; W-timestamp(Q)</code>, the write is rejected, and <code>Ti</code> is rolled back.</li>
+            <li>Otherwise, the write is executed, and <code>W-timestamp(Q)</code> is updated.</li>
+        </ul>
+        
+        <h2>Advantages and Disadvantages</h2>
+        <table>
+            <tr>
+                <th>Advantages</th>
+                <th>Disadvantages</th>
+            </tr>
+            <tr>
+                <td>Ensures serializability without locking.</td>
+                <td>High transaction abort rate under contention.</td>
+            </tr>
+            <tr>
+                <td>Prevents deadlocks.</td>
+                <td>Overhead due to timestamp management.</td>
+            </tr>
+            <tr>
+                <td>Facilitates high concurrency.</td>
+                <td>Frequent transaction restarts.</td>
+            </tr>
+        </table>
+        
+        <h2>Real-World Applications</h2>
+        <ul>
+            <li><strong>Banking Systems:</strong> Ensures transactional integrity in financial operations.</li>
+            <li><strong>Online Booking:</strong> Manages concurrent reservations efficiently.</li>
+            <li><strong>Blockchain:</strong> Uses timestamp-based ordering for security.</li>
+            <li><strong>Stock Markets:</strong> Ensures trade execution in the correct sequence.</li>
+        </ul>
+        
+        <h2>Example: Simulated Transactions</h2>
+        <button onclick="simulateTransactions()">Simulate Transactions</button>
+        <div id="log" class="log"></div>
+    </div>
+    
+    <script>
+        function simulateTransactions() {
+            let log = document.getElementById('log');
+            log.innerHTML = '';
+            
+            let transactions = [
+                { id: 'T1', timestamp: 100 },
+                { id: 'T2', timestamp: 200 },
+                { id: 'T3', timestamp: 150 },
+                { id: 'T4', timestamp: 250 },
+                { id: 'T5', timestamp: 175 },
+                { id: 'T6', timestamp: 300 }
+            ];
+            
+            transactions.sort((a, b) => a.timestamp - b.timestamp);
+            
+            transactions.forEach(tx => {
+                log.innerHTML += `<p>Transaction ${tx.id} executed at timestamp ${tx.timestamp}</p>`;
+            });
+        }
+    </script>
+
+    <footer>
+        <p>&copy; 2025 Timestamp Ordering in Databases | Soham Sable</p>
+    </footer>
+</body>
+</html>
